@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
-import lt.swedbank.it.academy.testing.purposes.DateUtil;
+import lt.swedbank.it.academy.testing.purposes.utility.DateUtil;
 import lt.swedbank.it.academy.testing.purposes.DomainInitializer;
 
 

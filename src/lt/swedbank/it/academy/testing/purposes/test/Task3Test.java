@@ -3,10 +3,11 @@ package lt.swedbank.it.academy.testing.purposes.test;
 import lt.swedbank.it.academy.testing.purposes.domain.Loan;
 import lt.swedbank.it.academy.testing.purposes.domain.LoanRiskType;
 import lt.swedbank.it.academy.testing.purposes.service.LoanService;
+import lt.swedbank.it.academy.testing.purposes.service.LoanServiceInterface;
 
 public class Task3Test {
   public static void main(String[] args) {
-    LoanService loanService = new LoanService(
+    LoanServiceInterface loanServiceInterface = new LoanService(
       createLoans(
         new LoanData("1", LoanRiskType.LOW_RISK),
         new LoanData("2", LoanRiskType.NORMAL_RISK),
@@ -17,9 +18,9 @@ public class Task3Test {
       )
     );
 
-    for (LoanRiskType riskType : loanService.groupLoansByRiskType().keySet()) {
+    for (LoanRiskType riskType : loanServiceInterface.groupLoansByRiskType().keySet()) {
       System.out.print(riskType + " -> ");
-      for (Loan loan : loanService.groupLoansByRiskType().get(riskType)) {
+      for (Loan loan : loanServiceInterface.groupLoansByRiskType().get(riskType)) {
         System.out.print(loan.getName() + " ");
       }
       System.out.println();

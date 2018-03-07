@@ -3,10 +3,11 @@ package lt.swedbank.it.academy.testing.purposes.test;
 import lt.swedbank.it.academy.testing.purposes.domain.Loan;
 import lt.swedbank.it.academy.testing.purposes.domain.VehicleLoan;
 import lt.swedbank.it.academy.testing.purposes.service.LoanService;
+import lt.swedbank.it.academy.testing.purposes.service.LoanServiceInterface;
 
 public class Task2Test {
   public static void main(String[] args) {
-    LoanService loanService = new LoanService(
+    LoanServiceInterface loanServiceInterface = new LoanService(
       createLoans(
         "Scout Traveler",
         "Audi A3",
@@ -17,7 +18,7 @@ public class Task2Test {
       )
     );
 
-    for (String model : loanService.findVehicleModels()) {
+    for (String model : loanServiceInterface.findVehicleModels()) {
       System.out.println(model);
     }
   }

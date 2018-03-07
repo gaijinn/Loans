@@ -1,4 +1,4 @@
-package lt.swedbank.it.academy.testing.purposes;
+package lt.swedbank.it.academy.testing.purposes.utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

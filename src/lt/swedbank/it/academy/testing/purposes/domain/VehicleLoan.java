@@ -1,8 +1,5 @@
 package lt.swedbank.it.academy.testing.purposes.domain;
 
-import lt.swedbank.it.academy.testing.purposes.DateUtil;
-
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,6 +10,7 @@ public class VehicleLoan extends Loan {
     private int age;
     private int maximumAge;
     private boolean isExpired;
+
 
     public Date getManufactured() {
         return manufactured;
