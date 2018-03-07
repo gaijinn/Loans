@@ -36,7 +36,7 @@ public class ClientApp {
 
 
     private static DomainInitializer getInitializer() {
-        return new Task2DomainInitializer();
+        return new Task3DomainInitializer();
     }
 
 }
