@@ -20,7 +20,7 @@ public class LoanService implements LoanServiceInterface {
     private List<Loan> expiredHighRiskVehicleLoansOfHighestDuration;
     private List<Loan> lowRiskHarvesterLoans;
     private List<Loan> expiredLandLoansInReservation;
-    private List<Loan> loansOfHigherThanAverageDeprecation;
+    private List<Loan> loansOfHigherThanAverageDepreciation;
 
 
     public LoanService(Loan[] loan) {
@@ -31,15 +31,17 @@ public class LoanService implements LoanServiceInterface {
         this.averageLoanCostOfLowRiskLoan = new BigDecimal(0);
     }
 
-    public List<Loan> findAllLoansHigherThanAverageDeprecation() {
+    public List<Loan> findAllLoansHigherThanAverageDepreciation() {
         List<Loan> loans = new ArrayList<>();
+        //TODO ask about this how to calculate! Also mistake in getExpiredLandLoansInReservation
+        //TODO l.getClass().equals(HarvesterLoan.class) instead of instanceof ???? 
         return loans;
     }
 
-    private BigDecimal calculateAverageDeprecation() {
+    private BigDecimal calculateAverageDepreciation() {
         BigDecimal averageDeprecation = new BigDecimal(0);
         for (Loan l : loan) {
-            if (l instanceof VehicleLoan) {
+            if (l.getClass().equals(VehicleLoan.class)) {
                 averageDeprecation = averageDeprecation.add(LoanUtil.calculateVehicleDeprecation((VehicleLoan) l));
             }
         }
@@ -59,7 +61,7 @@ public class LoanService implements LoanServiceInterface {
     public List<Loan> findAllLowRiskHarvesterLoans() {
         List<Loan> loans = new ArrayList<>();
         for (Loan l : loan) {
-            if (l instanceof HarvesterLoan && l.getRiskType().equals(LoanRiskType.LOW_RISK)) {
+            if (l.getClass().equals(HarvesterLoan.class) && l.getRiskType().equals(LoanRiskType.LOW_RISK)) {
                 loans.add(l);
             }
         }
@@ -77,8 +79,8 @@ public class LoanService implements LoanServiceInterface {
     }
 
     @Override
-    public List<Loan> getLoansOfHigherThanAverageDeprecation() {
-        return loansOfHigherThanAverageDeprecation;
+    public List<Loan> getLoansOfHigherThanAverageDepreciation() {
+        return loansOfHigherThanAverageDepreciation;
     }
 
     @Override
@@ -138,8 +140,6 @@ public class LoanService implements LoanServiceInterface {
     @Override
     public BigDecimal calculateAverageLoanCost() {
         for (Loan l : loan) {
-//            averageLoanCost = averageLoanCost.add(l.calculateInterest());
-//            averageLoanCost = averageLoanCost.add(l.getPrice());
             averageLoanCost = averageLoanCost.add(l.calculateTotalLoanCost());
         }
         return averageLoanCost = averageLoanCost.divide(new BigDecimal(loan.length));
@@ -304,7 +304,7 @@ public class LoanService implements LoanServiceInterface {
         this.expiredLandLoansInReservation = expiredLandLoansInReservation;
     }
 
-    public void setLoansOfHigherThanAverageDeprecation(List<Loan> loansOfHigherThanAverageDeprecation) {
-        this.loansOfHigherThanAverageDeprecation = loansOfHigherThanAverageDeprecation;
+    public void setLoansOfHigherThanAverageDepreciation(List<Loan> loansOfHigherThanAverageDepreciation) {
+        this.loansOfHigherThanAverageDepreciation = loansOfHigherThanAverageDepreciation;
     }
 }

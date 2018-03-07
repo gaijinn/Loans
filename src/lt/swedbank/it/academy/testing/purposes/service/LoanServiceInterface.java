@@ -14,7 +14,7 @@ public interface LoanServiceInterface {
 
     List<Loan> getExpiredLandLoansInReservation();
 
-    List<Loan> getLoansOfHigherThanAverageDeprecation();
+    List<Loan> getLoansOfHigherThanAverageDepreciation();
 
     List<Loan> findAllExpiredHighRiskVehicleLoansOfHighestDuration();
 
