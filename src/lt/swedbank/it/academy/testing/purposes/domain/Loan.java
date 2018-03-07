@@ -19,12 +19,9 @@ public class Loan implements DomainInitializer {
     private BigDecimal totalLoanCost;
 
     public boolean isValid() {
-        Date today = DateUtil.getDateFromString("2018-03-06");
+        Date today = DateUtil.getDateFromString("2018-03-07");
         Date expirationDate = DateUtil.addYears(creationDate, termInYears);
-        if (DateUtil.differenceInDays(expirationDate, today) > 0)
-            return true;
-        else
-            return false;
+        return DateUtil.differenceInDays(expirationDate, today) > 0;
     }
 
     public BigDecimal getTotalLoanCost() {

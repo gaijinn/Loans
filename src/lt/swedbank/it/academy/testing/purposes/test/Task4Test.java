@@ -1,4 +1,4 @@
-package lt.swedbank.it.academy.testing.purposes;
+package lt.swedbank.it.academy.testing.purposes.test;
 
 
 import lt.swedbank.it.academy.testing.purposes.domain.*;

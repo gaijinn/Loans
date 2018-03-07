@@ -1,9 +1,6 @@
 package lt.swedbank.it.academy.testing.purposes.service;
 
-import lt.swedbank.it.academy.testing.purposes.domain.Loan;
-import lt.swedbank.it.academy.testing.purposes.domain.LoanRiskType;
-import lt.swedbank.it.academy.testing.purposes.domain.RealEstateLoan;
-import lt.swedbank.it.academy.testing.purposes.domain.VehicleLoan;
+import lt.swedbank.it.academy.testing.purposes.domain.*;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -16,10 +13,10 @@ public class LoanService {
     private BigDecimal averageLoanCostOfNormalRiskLoan;
     private BigDecimal averageLoanCostOfLowRiskLoan;
     private BigDecimal maximumPriceOfNonExpiredLoans;
-    private List<VehicleLoan> normalRiskVehicleLoans;
+    private List<Loan> normalRiskVehicleLoans;
     private int maximumAgeOfLowRiskLoanedVehicles;
-    private List<RealEstateLoan> personalRealEstateLoans;
-    private List<VehicleLoan> expiredHighRiskVehicleLoansOfHighestDuration;
+    private List<Loan> personalRealEstateLoans;
+    private List<Loan> expiredHighRiskVehicleLoansOfHighestDuration;
 
 
     public LoanService(Loan[] loan) {
@@ -30,8 +27,44 @@ public class LoanService {
         this.averageLoanCostOfLowRiskLoan = new BigDecimal(0);
     }
 
-    public List<Loan> getHighRiskLoans() {
-        return highRiskLoans;
+    public List<Loan> findAllExpiredHighRiskVehicleLoansOfHighestDuration() {
+        List<Loan> list = new ArrayList<>();
+        for (Loan l : loan) {
+            if (l instanceof VehicleLoan && !l.isValid() && l.getRiskType().equals(LoanRiskType.HIGH_RISK)) {
+                list.add(l);
+            }
+        }
+        return list;
+    }
+
+    public List<Loan> findAllPersonalRealEstateLoans() {
+        List<Loan> loans = new ArrayList<>();
+        for (Loan l : loan) {
+            if (l instanceof RealEstateLoan && ((RealEstateLoan) l).getPurpose().equals(RealEstatePurpose.PERSONAL)) {
+                loans.add(l);
+            }
+        }
+        return loans;
+    }
+
+    public int calculateMaximumAgeOfLowRiskLoanedVehicles() {
+        int maximumAge = 0;
+        for (Loan l : loan) {
+            if (l instanceof VehicleLoan && l.getRiskType().equals(LoanRiskType.LOW_RISK)) {
+                maximumAge = ((VehicleLoan) l).getMaximumAge();
+            }
+        }
+        return maximumAge;
+    }
+
+    public List<Loan> findAllNormalRiskVehicleLoans() {
+        List<Loan> vehicleLoans = new ArrayList<>();
+        for (Loan l : loan) {
+            if (l instanceof VehicleLoan && l.getRiskType().equals(LoanRiskType.NORMAL_RISK)) {
+                vehicleLoans.add(l);
+            }
+        }
+        return vehicleLoans;
     }
 
     public List<Loan> calculateHighRiskLoans() {
@@ -41,10 +74,6 @@ public class LoanService {
             }
         }
         return highRiskLoans;
-    }
-
-    public BigDecimal getAverageLoanCost() {
-        return averageLoanCost;
     }
 
     public BigDecimal calculateAverageLoanCost() {
@@ -69,14 +98,6 @@ public class LoanService {
         return temp.divide(new BigDecimal(iter));
     }
 
-    public BigDecimal getMaximumPriceOfNonExpiredLoans() {
-        return maximumPriceOfNonExpiredLoans;
-    }
-
-    public void setMaximumPriceOfNonExpiredLoans(BigDecimal maximumPriceOfNonExpiredLoans) {
-        this.maximumPriceOfNonExpiredLoans = maximumPriceOfNonExpiredLoans;
-    }
-
     public BigDecimal calculateMaximumPriceOfNonExpiredLoan() {
         BigDecimal temp = new BigDecimal(0);
 
@@ -85,6 +106,45 @@ public class LoanService {
                 temp = l.getPrice();
         }
         return temp;
+    }
+
+    public Set<String> findVehicleModels() {
+        Set<String> vehicles = new HashSet<>();
+        for (Loan l : loan) {
+            if (l instanceof VehicleLoan) {
+                vehicles.add(((VehicleLoan) l).getModel());
+            }
+        }
+        return vehicles;
+    }
+
+    public Map<LoanRiskType, Collection<Loan>> groupLoansByRiskType() {
+        Map<LoanRiskType, Collection<Loan>> loans = new TreeMap<>();
+        for (Loan l : loan) {
+            if (!loans.containsKey(l.getRiskType())) {
+                loans.put(l.getRiskType(), new ArrayList<>());
+                loans.get(l.getRiskType()).add(l);
+            } else {
+                loans.get(l.getRiskType()).add(l);
+            }
+        }
+        return loans;
+    }
+
+    public List<Loan> getHighRiskLoans() {
+        return highRiskLoans;
+    }
+
+    public BigDecimal getMaximumPriceOfNonExpiredLoans() {
+        return maximumPriceOfNonExpiredLoans;
+    }
+
+    public BigDecimal getAverageLoanCost() {
+        return averageLoanCost;
+    }
+
+    public void setMaximumPriceOfNonExpiredLoans(BigDecimal maximumPriceOfNonExpiredLoans) {
+        this.maximumPriceOfNonExpiredLoans = maximumPriceOfNonExpiredLoans;
     }
 
     public void setAverageLoanCost(BigDecimal averageLoanCost) {
@@ -119,11 +179,11 @@ public class LoanService {
         return averageLoanCostOfLowRiskLoan;
     }
 
-    public List<VehicleLoan> getNormalRiskVehicleLoans() {
+    public List<Loan> getNormalRiskVehicleLoans() {
         return normalRiskVehicleLoans;
     }
 
-    public void setNormalRiskVehicleLoans(List<VehicleLoan> normalRiskVehicleLoans) {
+    public void setNormalRiskVehicleLoans(List<Loan> normalRiskVehicleLoans) {
         this.normalRiskVehicleLoans = normalRiskVehicleLoans;
     }
 
@@ -135,42 +195,21 @@ public class LoanService {
         this.maximumAgeOfLowRiskLoanedVehicles = maximumAgeOfLowRiskLoanedVehicles;
     }
 
-    public List<RealEstateLoan> getPersonalRealEstateLoans() {
+    public List<Loan> getPersonalRealEstateLoans() {
         return personalRealEstateLoans;
     }
 
-    public void setPersonalRealEstateLoans(List<RealEstateLoan> personalRealEstateLoans) {
+    public void setPersonalRealEstateLoans(List<Loan> personalRealEstateLoans) {
         this.personalRealEstateLoans = personalRealEstateLoans;
     }
 
-    public List<VehicleLoan> getExpiredHighRiskVehicleLoansOfHighestDuration() {
+    public List<Loan> getExpiredHighRiskVehicleLoansOfHighestDuration() {
         return expiredHighRiskVehicleLoansOfHighestDuration;
     }
 
-    public void setExpiredHighRiskVehicleLoansOfHighestDuration(List<VehicleLoan> expiredHighRiskVehicleLoansOfHighestDuration) {
+    public void setExpiredHighRiskVehicleLoansOfHighestDuration(List<Loan> expiredHighRiskVehicleLoansOfHighestDuration) {
         this.expiredHighRiskVehicleLoansOfHighestDuration = expiredHighRiskVehicleLoansOfHighestDuration;
     }
 
-    public Set<String> findVehicleModels() {
-        Set<String> vehicles = new HashSet<>();
-        for (Loan l : loan) {
-            if (l instanceof VehicleLoan) {
-                vehicles.add(((VehicleLoan) l).getModel());
-            }
-        }
-        return vehicles;
-    }
 
-    public Map<LoanRiskType, Collection<Loan>> groupLoansByRiskType() {
-        Map<LoanRiskType, Collection<Loan>> loans = new TreeMap<>();
-        for (Loan l : loan) {
-            if (!loans.containsKey(l.getRiskType())) {
-                loans.put(l.getRiskType(), new ArrayList<>());
-                loans.get(l.getRiskType()).add(l);
-            } else {
-                loans.get(l.getRiskType()).add(l);
-            }
-        }
-        return loans;
-    }
 }

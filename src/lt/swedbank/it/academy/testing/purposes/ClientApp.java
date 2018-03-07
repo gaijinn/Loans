@@ -2,7 +2,10 @@ package lt.swedbank.it.academy.testing.purposes;
 
 import lt.swedbank.it.academy.testing.purposes.domain.Loan;
 import lt.swedbank.it.academy.testing.purposes.domain.LoanRiskType;
+import lt.swedbank.it.academy.testing.purposes.domain.RealEstatePurpose;
 import lt.swedbank.it.academy.testing.purposes.service.LoanService;
+
+import javax.xml.crypto.KeySelector;
 
 public class ClientApp {
 
@@ -11,25 +14,19 @@ public class ClientApp {
         Loan[] loans = getInitializer().initializeLoans();
         LoanService service = new LoanService(loans);
 
-        service.setHighRiskLoans(service.calculateHighRiskLoans());
+        service.setNormalRiskVehicleLoans(service.findAllNormalRiskVehicleLoans());
 
-        System.out.println("There are " + service.getHighRiskLoans().size());
+        System.out.println("There are " + service.getNormalRiskVehicleLoans().size());
 
-        service.setAverageLoanCost(service.calculateAverageLoanCost());
+        service.setMaximumAgeOfLowRiskLoanedVehicles(service.calculateMaximumAgeOfLowRiskLoanedVehicles());
 
-        System.out.println(service.getAverageLoanCost());
+        System.out.println(service.getMaximumAgeOfLowRiskLoanedVehicles());
 
-        service.setAverageLoanCostOfNormalRiskLoan(service.calculateAverageLoanCostByRiskGroups(LoanRiskType.NORMAL_RISK));
-        System.out.println(LoanRiskType.NORMAL_RISK + ": " + service.getAverageLoanCostOfNormalRiskLoan());
+        service.setPersonalRealEstateLoans(service.findAllPersonalRealEstateLoans());
+        System.out.println("There are: " + service.getPersonalRealEstateLoans().size());
 
-        service.setAverageLoanCostOfHighRiskLoan(service.calculateAverageLoanCostByRiskGroups(LoanRiskType.HIGH_RISK));
-        System.out.println(LoanRiskType.HIGH_RISK + ": " + service.getAverageLoanCostOfHighRiskLoan());
-
-        service.setAverageLoanCostOfLowRiskLoan(service.calculateAverageLoanCostByRiskGroups(LoanRiskType.LOW_RISK));
-        System.out.println(LoanRiskType.LOW_RISK + ": " + service.getAverageLoanCostOfLowRiskLoan());
-
-        service.setMaximumPriceOfNonExpiredLoans(service.calculateMaximumPriceOfNonExpiredLoan());
-        System.out.println(service.getMaximumPriceOfNonExpiredLoans());
+        service.setExpiredHighRiskVehicleLoansOfHighestDuration(service.findAllExpiredHighRiskVehicleLoansOfHighestDuration());
+        System.out.println(service.getExpiredHighRiskVehicleLoansOfHighestDuration().size() + " " + service.getExpiredHighRiskVehicleLoansOfHighestDuration().get(0).getTermInYears());
 
 
 
@@ -38,7 +35,7 @@ public class ClientApp {
     }
 
 
-    public static DomainInitializer getInitializer() {
+    private static DomainInitializer getInitializer() {
         return new Task2DomainInitializer();
     }
 
