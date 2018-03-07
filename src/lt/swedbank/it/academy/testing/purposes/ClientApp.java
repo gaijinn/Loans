@@ -9,18 +9,16 @@ public class ClientApp {
     public static void main(String[] args) {
 
         Loan[] loans = getInitializer().initializeLoans();
-        LoanServiceInterface service = new LoanService(loans);
+        LoanService service = new LoanService(loans);
 
-//        service.set(service.find());
+        service.setLowRiskHarvesterLoans(service.findAllLowRiskHarvesterLoans());
 
-        System.out.println("There are " + service.getNormalRiskVehicleLoans().size());
+        System.out.println("There are " + service.getLowRiskHarvesterLoans().size());
 
-        service.setMaximumAgeOfLowRiskLoanedVehicles(service.calculateMaximumAgeOfLowRiskLoanedVehicles());
+        service.setExpiredLandLoansInReservation(service.findAllExpiredLandLoansInReservation());
 
-        System.out.println(service.getMaximumAgeOfLowRiskLoanedVehicles());
+        System.out.println("There is " + service.getExpiredLandLoansInReservation().size());
 
-        service.setPersonalRealEstateLoans(service.findAllPersonalRealEstateLoans());
-        System.out.println("There are: " + service.getPersonalRealEstateLoans().size());
 
         service.setExpiredHighRiskVehicleLoansOfHighestDuration(service.findAllExpiredHighRiskVehicleLoansOfHighestDuration());
         System.out.println(service.getExpiredHighRiskVehicleLoansOfHighestDuration().size() + " " + service.getExpiredHighRiskVehicleLoansOfHighestDuration().get(0).getTermInYears());

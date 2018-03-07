@@ -1,6 +1,7 @@
 package lt.swedbank.it.academy.testing.purposes.service;
 
 import lt.swedbank.it.academy.testing.purposes.domain.*;
+import lt.swedbank.it.academy.testing.purposes.utility.LoanUtil;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -30,10 +31,35 @@ public class LoanService implements LoanServiceInterface {
         this.averageLoanCostOfLowRiskLoan = new BigDecimal(0);
     }
 
-    public List<Loan> findAllLowRiskHarvesterLoans(){
+    public List<Loan> findAllLoansHigherThanAverageDeprecation() {
         List<Loan> loans = new ArrayList<>();
-        for (Loan l: loan) {
-            if (l instanceof HarvesterLoan && l.getRiskType().equals(LoanRiskType.LOW_RISK)){
+        return loans;
+    }
+
+    private BigDecimal calculateAverageDeprecation() {
+        BigDecimal averageDeprecation = new BigDecimal(0);
+        for (Loan l : loan) {
+            if (l instanceof VehicleLoan) {
+                averageDeprecation = averageDeprecation.add(LoanUtil.calculateVehicleDeprecation((VehicleLoan) l));
+            }
+        }
+        return averageDeprecation.divide(new BigDecimal(loan.length));
+    }
+
+    public List<Loan> findAllExpiredLandLoansInReservation() {
+        List<Loan> loans = new ArrayList<>();
+        for (Loan l : loan) {
+            if (l instanceof LandLoan && ((LandLoan) l).isInReservation() && !l.isValid()) {
+                loans.add(l);
+            }
+        }
+        return loans;
+    }
+
+    public List<Loan> findAllLowRiskHarvesterLoans() {
+        List<Loan> loans = new ArrayList<>();
+        for (Loan l : loan) {
+            if (l instanceof HarvesterLoan && l.getRiskType().equals(LoanRiskType.LOW_RISK)) {
                 loans.add(l);
             }
         }
