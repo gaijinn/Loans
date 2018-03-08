@@ -4,11 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
-import lt.swedbank.it.academy.testing.purposes.utility.DateUtil;
-import lt.swedbank.it.academy.testing.purposes.DomainInitializer;
 
-
-public class Loan implements DomainInitializer {
+public class Loan {
 
     private Date creationDate;
     private int termInYears;
@@ -17,11 +14,14 @@ public class Loan implements DomainInitializer {
     private BigDecimal price;
     private BigDecimal interestRate;
     private BigDecimal totalLoanCost;
+    private boolean isValid;
 
     public boolean isValid() {
-        Date today = DateUtil.getDateFromString("2018-03-07");
-        Date expirationDate = DateUtil.addYears(creationDate, termInYears);
-        return DateUtil.differenceInDays(expirationDate, today) > 0;
+        return this.isValid;
+    }
+
+    public void setIsValid(boolean set) {
+        this.isValid = set;
     }
 
     public BigDecimal getTotalLoanCost() {
@@ -30,17 +30,6 @@ public class Loan implements DomainInitializer {
 
     public void setTotalLoanCost(BigDecimal totalLoanCost) {
         this.totalLoanCost = totalLoanCost;
-    }
-
-    public BigDecimal calculateTotalLoanCost() {
-        BigDecimal totalLoan = new BigDecimal(0);
-        totalLoan = totalLoan.add(calculateInterest());
-        totalLoan = totalLoan.add(this.price);
-        return totalLoan;
-    }
-
-    public BigDecimal calculateInterest(){
-        return this.price.multiply((this.interestRate.divide(new BigDecimal(100))));
     }
 
     public BigDecimal getInterestRate() {
@@ -92,11 +81,6 @@ public class Loan implements DomainInitializer {
     }
 
     @Override
-    public Loan[] initializeLoans() {
-        return new Loan[0];
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Loan)) return false;
@@ -114,5 +98,19 @@ public class Loan implements DomainInitializer {
     public int hashCode() {
 
         return Objects.hash(creationDate, termInYears, name, riskType, price, interestRate, totalLoanCost);
+    }
+
+    @Override
+    public String toString() {
+        return "Loan{" +
+                "creationDate=" + creationDate +
+                ", termInYears=" + termInYears +
+                ", name='" + name + '\'' +
+                ", riskType=" + riskType +
+                ", price=" + price +
+                ", interestRate=" + interestRate +
+                ", totalLoanCost=" + totalLoanCost +
+                ", isValid=" + isValid +
+                '}';
     }
 }
