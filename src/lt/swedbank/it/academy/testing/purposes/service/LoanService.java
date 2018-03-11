@@ -109,7 +109,7 @@ public class LoanService implements LoanServiceInterface {
     public BigDecimal calculateAverageLoanCost() {
         BigDecimal averageLoanCost = new BigDecimal(0);
         for (Loan l : loans) {
-            averageLoanCost = averageLoanCost.add(calculateTotalLoanCost(l));
+            averageLoanCost = averageLoanCost.add(calculateTotalLoanCost(l.getPrice(), l.getInterestRate()));
         }
         return averageLoanCost = averageLoanCost.divide(new BigDecimal(loans.length));
     }
@@ -121,7 +121,7 @@ public class LoanService implements LoanServiceInterface {
         for (Loan l : loans) {
             if (l.getRiskType() == loanRiskType) {
                 iter++;
-                temp = temp.add(calculateInterest(l));
+                temp = temp.add(calculateInterest(l.getPrice(), l.getInterestRate()));
                 temp = temp.add(l.getPrice());
             }
         }
@@ -172,7 +172,7 @@ public class LoanService implements LoanServiceInterface {
 
     private BigDecimal calculateTotalLoanCost(BigDecimal price, BigDecimal interestRate) {
         BigDecimal totalLoan = new BigDecimal(0);
-        totalLoan = totalLoan.add(calculateInterest(price,interestRate));
+        totalLoan = totalLoan.add(calculateInterest(price, interestRate));
         totalLoan = totalLoan.add(price);
         return totalLoan;
     }
@@ -183,21 +183,21 @@ public class LoanService implements LoanServiceInterface {
 
 
     public Set<Loan> prioritizeLoans() {
+        loans = assignTotalCosts(loans);
         Set<Loan> loanSet = new TreeSet<>(new PrioritizeLoansComparator());
         for (Loan l : loans) {
-            l.setTotalLoanCost(calculateTotalLoanCost(l.getPrice(),l.getInterestRate()));
             loanSet.add(l);
-            System.out.println(loanSet.size());
         }
         return loanSet;
     }
 
-    public List<Loan> assignTotalCosts(List<Loan> loans){
+    public Loan[] assignTotalCosts(Loan[] loans) {
         List<Loan> loanList = new ArrayList<>();
-        for (Loan loan: loans) {
-            loanList.add(loan.setTotalLoanCost(calculateTotalLoanCost(loan.getPrice(), loan.getInterestRate())));
+        for (Loan loan : loans) {
+            loan.setTotalLoanCost(calculateTotalLoanCost(loan.getPrice(), loan.getInterestRate()));
+            loanList.add(loan);
         }
-
+        return loanList.toArray(new Loan[0]);
     }
 
 

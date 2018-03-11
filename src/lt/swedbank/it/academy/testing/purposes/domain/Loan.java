@@ -96,7 +96,6 @@ public class Loan {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(creationDate, termInYears, name, riskType, price, interestRate, totalLoanCost);
     }
 

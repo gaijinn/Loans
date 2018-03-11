@@ -40,8 +40,6 @@ public class Task5Test {
         );
         Collections.shuffle(carLoans);
 
-        carLoans =
-
         Collections.sort(carLoans);
         for (CarLoan carLoan : carLoans) {
             System.out.print(carLoan.getName() + " ");
