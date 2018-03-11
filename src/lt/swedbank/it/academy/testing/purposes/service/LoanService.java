@@ -5,6 +5,7 @@ import lt.swedbank.it.academy.testing.purposes.utility.DateUtil;
 import lt.swedbank.it.academy.testing.purposes.utility.LoanUtil;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class LoanService implements LoanServiceInterface {
@@ -16,18 +17,18 @@ public class LoanService implements LoanServiceInterface {
 
     public List<Loan> findAllLoansHigherThanAverageDepreciation() {
         List<Loan> loans = new ArrayList<>();
-        //TODO ask about this how to calculate! Also mistake in getExpiredLandLoansInReservation
+        //TODO ask about this how to calculate!
         return loans;
     }
 
-    private BigDecimal calculateAverageDepreciation() {
+    public BigDecimal calculateAverageDepreciation() {
         BigDecimal averageDeprecation = new BigDecimal(0);
         for (Loan l : loans) {
-            if (l.getClass().equals(VehicleLoan.class)) {
+            if (l instanceof VehicleLoan) {
                 averageDeprecation = averageDeprecation.add(LoanUtil.calculateVehicleDeprecation((VehicleLoan) l));
             }
         }
-        return averageDeprecation.divide(new BigDecimal(loans.length));
+        return averageDeprecation.divide(new BigDecimal(loans.length),RoundingMode.HALF_UP);
     }
 
     public List<Loan> findAllExpiredLandLoansInReservation() {

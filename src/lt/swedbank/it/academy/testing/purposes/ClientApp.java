@@ -1,6 +1,7 @@
 package lt.swedbank.it.academy.testing.purposes;
 
 import lt.swedbank.it.academy.testing.purposes.domain.Loan;
+import lt.swedbank.it.academy.testing.purposes.domain.LoanRiskType;
 import lt.swedbank.it.academy.testing.purposes.service.LoanService;
 
 public class ClientApp {
@@ -9,6 +10,8 @@ public class ClientApp {
 
         Loan[] loans = getInitializer().initializeLoans();
         LoanService service = new LoanService(loans);
+
+        System.out.println(service.calculateAverageDepreciation());
     }
 
 

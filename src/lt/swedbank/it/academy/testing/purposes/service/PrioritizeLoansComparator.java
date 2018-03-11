@@ -6,17 +6,20 @@ import java.util.Comparator;
 
 public class PrioritizeLoansComparator implements Comparator<Loan> {
     @Override
-    public int compare(Loan o1, Loan o2) {
+    public int compare(Loan object1, Loan object2) {
 
-        if (o1.getRiskType().getValue() > o2.getRiskType().getValue())
+        if (object1.getRiskType().getValue() > object2.getRiskType().getValue())
+            return -1;
+        if (object1.getRiskType().getValue() < object2.getRiskType().getValue())
             return 1;
-        if (o1.getRiskType().ordinal() < o2.getRiskType().ordinal())
+        if (object1.getTotalLoanCost().compareTo(object2.getTotalLoanCost()) > 0)
             return -1;
-        if (o1.getTotalLoanCost().compareTo(o2.getTotalLoanCost()) > 0)
-            return -1;
-        if (o1.getTotalLoanCost().compareTo(o2.getTotalLoanCost()) < 0) {
+        if (object1.getTotalLoanCost().compareTo(object2.getTotalLoanCost()) < 0) {
             return 1;
         }
-        return 1;
+        if (object1.getCreationDate().compareTo(object2.getCreationDate()) > 0){
+            return 1;
+        }
+        return -1;
     }
 }
